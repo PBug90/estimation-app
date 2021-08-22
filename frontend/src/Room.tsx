@@ -18,7 +18,7 @@ function Room({ username }: RoomProps) {
   const { roomId } = useParams<{ roomId: string }>();
 
   useEffect(() => {
-    setSocket(io(`http://${window.location.hostname}:3000`));
+    setSocket(io());
 
     return () => {
       socket?.close();
