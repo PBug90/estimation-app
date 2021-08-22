@@ -12,7 +12,7 @@ interface RoomProps {
 
 function Room({ username }: RoomProps) {
   const [estimations, setEstimations] = useState<Record<string, number>>({});
-  const [test, setTest] = useState<number>(0);
+  const [selectedCardValue, setSelectedCardValue] = useState<number>(0);
   const [isRevealed, setIsRevealed] = useState<boolean>(false);
   const [socket, setSocket] = useState<Socket | null>(null);
   const { roomId } = useParams<{ roomId: string }>();
@@ -26,7 +26,6 @@ function Room({ username }: RoomProps) {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // subscribe to the socket event
   useEffect(() => {
     if (!socket) return;
 
@@ -43,7 +42,7 @@ function Room({ username }: RoomProps) {
 
     socket.on("reveal", () => {
       setIsRevealed(true);
-      setTest(-1);
+      setSelectedCardValue(-1);
     });
 
     socket.on("leave", (name: string) => {
@@ -73,6 +72,7 @@ function Room({ username }: RoomProps) {
         return obj;
       });
       setIsRevealed(false);
+      setSelectedCardValue(0);
     });
 
     socket.on("roomstate", (value: Record<string, number>) => {
@@ -82,7 +82,7 @@ function Room({ username }: RoomProps) {
 
   const handleSelection = (value: number) => {
     if (isRevealed === true) return;
-    setTest(value);
+    setSelectedCardValue(value);
     socket?.emit("estimate", value);
     return undefined;
   };
@@ -98,19 +98,38 @@ function Room({ username }: RoomProps) {
   };
 
   return (
-    <div>
-      <button onClick={() => revealCommand()}>Reveal</button>
-      <button onClick={() => resetCommand()}>Reset</button>
-      <RoomTable roomState={estimations} revealed={isRevealed} />
+    <div className="min-h-screen flex flex-col justify-items-stretch bg-gray-50 ">
+      <div className="flex bg-gray-900 flex-col">
+        <div className="flex flex-row justify-start p-5">
+          <button
+            className="py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onClick={() => revealCommand()}
+          >
+            Reveal
+          </button>
 
-      <div className="deck">
+          <button
+            className="ml-1 py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+            onClick={() => resetCommand()}
+          >
+            Reset
+          </button>
+        </div>
+        <div className="flex flex-row justify-around my-20">
+          <RoomTable roomState={estimations} revealed={isRevealed} />
+        </div>
+      </div>
+
+      <div className="flex flex-row bg-gray-500 justify-evenly p-10">
         {fibo.map((number) => (
-          <Card
-            estimation={number}
-            highlighted={test === number}
-            visible={true}
-            onSelection={handleSelection}
-          />
+          <div className="ml-5">
+            <Card
+              estimation={number}
+              highlighted={selectedCardValue === number}
+              visible={true}
+              onSelection={handleSelection}
+            />
+          </div>
         ))}
       </div>
     </div>

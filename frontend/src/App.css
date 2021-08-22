@@ -1,34 +1,10 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
-body {
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
-}
-
-.App-link {
-  color: #61dafb;
-}
-
-.deck {
-  flex-wrap: wrap;
-  width: 100%;
-  overflow-x: scroll;
-  display: flex;
-  flex-direction: row;
-  overflow-x: auto;
-}
 
 .card {
   width: 80px;
   height: 120px;
-  margin: 25px;
   transition: transform 1s;
   transform-style: preserve-3d;
   cursor: pointer;
