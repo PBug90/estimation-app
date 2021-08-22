@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Redirect, useLocation, useHistory } from "react-router";
+import { useLocation, useHistory } from "react-router";
 interface LocationState {
   from: {
     pathname: string;

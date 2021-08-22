@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import io, { Socket } from "socket.io-client";
-import { useParams, Redirect, useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Card from "./Card";
 import RoomTable from "./RoomTable";
 
@@ -73,7 +73,7 @@ function Room({ username }: RoomProps) {
     return () => {
       newSocket.close();
     };
-  }, [setSocket]);
+  });
 
   const handleSelection = (value: number) => {
     if (isRevealed === true) return;
