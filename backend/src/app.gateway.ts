@@ -46,7 +46,6 @@ export class AppGateway
 
   @SubscribeMessage('reveal')
   handleRevealMessage(client: Socket): void {
-    console.log(client.rooms.values());
     const roomName = this.socketToClientInfo.get(client).mainRoom;
     const room = this.rooms.get(roomName);
     this.logger.debug('Reveal command received ' + roomName);
@@ -107,6 +106,7 @@ export class AppGateway
 
   handleDisconnect(client: Socket) {
     this.logger.log(`Client disconnected: ${client.id}`);
+    if (this.socketToClientInfo.has(client) === false) return;
     const { mainRoom, name } = this.socketToClientInfo.get(client);
     const room = this.rooms.get(mainRoom);
     if (room) {

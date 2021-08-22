@@ -23,7 +23,6 @@ export default function Login() {
 
       <button
         onClick={() => {
-          console.log(username);
           sessionStorage.setItem("username", username);
           history.replace(from);
         }}

@@ -11,32 +11,42 @@ interface RoomProps {
 }
 
 function Room({ username }: RoomProps) {
-  const [socket, setSocket] = useState<Socket | null>(null);
   const [estimations, setEstimations] = useState<Record<string, number>>({});
   const [test, setTest] = useState<number>(0);
   const [isRevealed, setIsRevealed] = useState<boolean>(false);
+  const [socket, setSocket] = useState<Socket | null>(null);
   const { roomId } = useParams<{ roomId: string }>();
 
   useEffect(() => {
-    const newSocket = io(`http://${window.location.hostname}:3000`);
-    setSocket(newSocket);
-    newSocket.on("connect", () => {
-      newSocket.emit("join", { name: username, room: roomId });
+    setSocket(io(`http://${window.location.hostname}:3000`));
+
+    return () => {
+      socket?.close();
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  // subscribe to the socket event
+  useEffect(() => {
+    if (!socket) return;
+
+    socket.on("connect", () => {
+      socket.emit("join", { name: username, room: roomId });
     });
 
-    newSocket.on("estimate", (payload: { name: string; value: number }) => {
+    socket.on("estimate", (payload: { name: string; value: number }) => {
       setEstimations((oldEstimations) => ({
         ...oldEstimations,
         [payload.name]: payload.value,
       }));
     });
 
-    newSocket.on("reveal", () => {
+    socket.on("reveal", () => {
       setIsRevealed(true);
       setTest(-1);
     });
 
-    newSocket.on("leave", (name: string) => {
+    socket.on("leave", (name: string) => {
       setEstimations((oldEstimations) => {
         delete oldEstimations[name];
         return {
@@ -45,7 +55,7 @@ function Room({ username }: RoomProps) {
       });
     });
 
-    newSocket.on("join", (name: string) => {
+    socket.on("join", (name: string) => {
       setEstimations((oldEstimations) => {
         return {
           ...oldEstimations,
@@ -54,11 +64,10 @@ function Room({ username }: RoomProps) {
       });
     });
 
-    newSocket.on("reset", () => {
+    socket.on("reset", () => {
       setEstimations((prev) => {
         const obj: Record<string, number> = {};
         for (const key in prev) {
-          console.log(key);
           obj[key] = -1;
         }
         return obj;
@@ -66,14 +75,10 @@ function Room({ username }: RoomProps) {
       setIsRevealed(false);
     });
 
-    newSocket.on("roomstate", (value: Record<string, number>) => {
+    socket.on("roomstate", (value: Record<string, number>) => {
       setEstimations(value);
     });
-
-    return () => {
-      newSocket.close();
-    };
-  });
+  }, [socket, username, roomId]);
 
   const handleSelection = (value: number) => {
     if (isRevealed === true) return;
@@ -88,7 +93,6 @@ function Room({ username }: RoomProps) {
   };
 
   const resetCommand = () => {
-    console.log(estimations);
     socket?.emit("reset");
     return undefined;
   };
