@@ -99,7 +99,6 @@ function Room({ username }: RoomProps) {
 
   return (
     <div>
-      {JSON.stringify(estimations)}
       <button onClick={() => revealCommand()}>Reveal</button>
       <button onClick={() => resetCommand()}>Reset</button>
       <RoomTable roomState={estimations} revealed={isRevealed} />
