@@ -33,7 +33,7 @@ export default function RoomTable(props: RoomTableProps) {
     <div className="flex justify-around flex-col">
       <div className="flex flex-row justify-center h-32">
         <div className="flex items-center justify-center font-bold text-gray-700 rounded-full bg-white flex-none w-32 h-32 justify-center font-mono text-4xl">
-          <div className="">{revealed ? average : "Vote!"}</div>
+          <div className="">{revealed ? average.toFixed(1) : "Vote!"}</div>
         </div>
       </div>
       <div className="flex flex-row justify-center mt-20">

@@ -59,6 +59,7 @@
 }
 
 .card__face--back {
+  z-index: 9999;
   background-color: #e5e5f7;
   background: repeating-linear-gradient(
     -45deg,

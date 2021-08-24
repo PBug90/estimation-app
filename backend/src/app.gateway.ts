@@ -8,11 +8,7 @@ import {
 } from '@nestjs/websockets';
 import { Logger } from '@nestjs/common';
 import { Socket, Server } from 'socket.io';
-
-interface RoomState {
-  admin: Socket;
-  estimations: Record<string, number>;
-}
+import { RoomService } from './room.service';
 
 interface ClientInfo {
   mainRoom: string;
@@ -23,22 +19,21 @@ interface ClientInfo {
 export class AppGateway
   implements OnGatewayInit, OnGatewayConnection, OnGatewayDisconnect
 {
+  constructor(private roomService: RoomService) {}
+
   handleConnection(client: any, ...args: any[]) {
     this.logger.log('new connection');
   }
 
   @WebSocketServer() server: Server;
   private logger: Logger = new Logger('AppGateway');
-  private rooms: Map<string, RoomState> = new Map();
   private socketToClientInfo = new Map<Socket, ClientInfo>();
 
   @SubscribeMessage('estimate')
   handleEstimationMessage(client: Socket, estimation: number): void {
-    const room: string = this.socketToClientInfo.get(client).mainRoom;
-    const roomState = this.rooms.get(room);
-    roomState.estimations[this.socketToClientInfo.get(client).name] =
-      estimation;
-    this.server.to(room).emit('estimate', {
+    const { mainRoom, name } = this.socketToClientInfo.get(client);
+    this.roomService.setEstimation(mainRoom, name, estimation);
+    this.server.to(mainRoom).emit('estimate', {
       name: this.socketToClientInfo.get(client).name,
       value: estimation,
     });
@@ -47,57 +42,29 @@ export class AppGateway
   @SubscribeMessage('reveal')
   handleRevealMessage(client: Socket): void {
     const roomName = this.socketToClientInfo.get(client).mainRoom;
-    const room = this.rooms.get(roomName);
-    this.logger.debug('Reveal command received ' + roomName);
-    if (room) {
-      this.server.to(roomName).emit('reveal');
-    }
+    this.server.to(roomName).emit('reveal');
   }
 
   @SubscribeMessage('reset')
   handleResetMessage(client: Socket): void {
     const roomName = this.socketToClientInfo.get(client).mainRoom;
-    const room = this.rooms.get(roomName);
-    this.logger.debug('Reveal command received ' + roomName);
-    if (room) {
-      this.server.to(roomName).emit('reset');
-    }
+    this.roomService.reset(roomName);
+    this.server.to(roomName).emit('reset');
   }
 
   @SubscribeMessage('join')
-  createRoom(
+  join(
     client: Socket,
     { name: clientName, room: roomName }: { name: string; room: string },
   ) {
-    const room = this.rooms.get(roomName);
-    if (room) {
-      this.logger.debug(roomName + ' ' + clientName);
-      if (room.estimations[clientName] === undefined) {
-        room.estimations[clientName] = -1;
-      }
-      client.join(roomName);
-      client.emit('roles', ['participant']);
-      client.emit('roomstate', room.estimations);
-    } else {
-      this.logger.debug(roomName + ' ' + clientName);
-      const newRoom = {
-        admin: client,
-        estimations: {},
-      };
-      this.rooms.set(roomName, newRoom);
-      newRoom.estimations[clientName] = -1;
-      client.join(roomName);
-      client.emit('roles', ['admin']);
-      client.emit('roomstate', newRoom.estimations);
-    }
+    this.roomService.create(roomName, clientName);
     this.socketToClientInfo.set(client, {
-      name: clientName,
       mainRoom: roomName,
+      name: clientName,
     });
-    if (room) {
-      room.estimations[clientName] = -1;
-      this.server.to(roomName).emit('join', clientName);
-    }
+    client.join(roomName);
+    this.server.to(roomName).emit('join', clientName);
+    client.emit('roomstate', this.roomService.getEstimations(roomName));
   }
 
   afterInit(server: Server) {
@@ -108,10 +75,7 @@ export class AppGateway
     this.logger.log(`Client disconnected: ${client.id}`);
     if (this.socketToClientInfo.has(client) === false) return;
     const { mainRoom, name } = this.socketToClientInfo.get(client);
-    const room = this.rooms.get(mainRoom);
-    if (room) {
-      delete room.estimations[name];
-      this.server.to(mainRoom).emit('leave', name);
-    }
+    this.roomService.removeMember(mainRoom, name);
+    this.server.to(mainRoom).emit('leave', name);
   }
 }
