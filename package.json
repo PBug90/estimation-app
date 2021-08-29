@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "install": "npm install && cd frontend && npm install && cd ../backend && npm install",
+    "postinstall": "cd frontend && npm install && cd ../backend && npm install",
     "build": "cd frontend && npm run build && cd ../backend && npm run build",
     "lint": "npx eslint . && prettier --check ."
   },
