@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
-import io, { Socket } from "socket.io-client";
-import { useParams } from "react-router-dom";
-import Card from "./Card";
-import RoomTable from "./RoomTable";
+import React, { useEffect, useState } from 'react';
+import io, { Socket } from 'socket.io-client';
+import { useParams } from 'react-router-dom';
+import Card from './Card';
+import RoomTable from './RoomTable';
 
 const fibo = [1, 2, 3, 5, 8, 13, 21, 34, 55, 89];
 
@@ -29,23 +29,23 @@ function Room({ username }: RoomProps) {
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("connect", () => {
-      socket.emit("join", { name: username, room: roomId });
+    socket.on('connect', () => {
+      socket.emit('join', { name: username, room: roomId });
     });
 
-    socket.on("estimate", (payload: { name: string; value: number }) => {
+    socket.on('estimate', (payload: { name: string; value: number }) => {
       setEstimations((oldEstimations) => ({
         ...oldEstimations,
         [payload.name]: payload.value,
       }));
     });
 
-    socket.on("reveal", () => {
+    socket.on('reveal', () => {
       setIsRevealed(true);
       setSelectedCardValue(-1);
     });
 
-    socket.on("leave", (name: string) => {
+    socket.on('leave', (name: string) => {
       setEstimations((oldEstimations) => {
         delete oldEstimations[name];
         return {
@@ -54,7 +54,7 @@ function Room({ username }: RoomProps) {
       });
     });
 
-    socket.on("join", (name: string) => {
+    socket.on('join', (name: string) => {
       setEstimations((oldEstimations) => {
         return {
           ...oldEstimations,
@@ -63,7 +63,7 @@ function Room({ username }: RoomProps) {
       });
     });
 
-    socket.on("reset", () => {
+    socket.on('reset', () => {
       setEstimations((prev) => {
         const obj: Record<string, number> = {};
         for (const key in prev) {
@@ -75,7 +75,7 @@ function Room({ username }: RoomProps) {
       setSelectedCardValue(0);
     });
 
-    socket.on("roomstate", (value: Record<string, number>) => {
+    socket.on('roomstate', (value: Record<string, number>) => {
       setEstimations(value);
     });
   }, [socket, username, roomId]);
@@ -83,17 +83,17 @@ function Room({ username }: RoomProps) {
   const handleSelection = (value: number) => {
     if (isRevealed === true) return;
     setSelectedCardValue(value);
-    socket?.emit("estimate", value);
+    socket?.emit('estimate', value);
     return undefined;
   };
 
   const revealCommand = () => {
-    socket?.emit("reveal");
+    socket?.emit('reveal');
     return undefined;
   };
 
   const resetCommand = () => {
-    socket?.emit("reset");
+    socket?.emit('reset');
     return undefined;
   };
 

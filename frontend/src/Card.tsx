@@ -1,4 +1,4 @@
-import React from "react";
+import React from 'react';
 
 type CardProps = {
   name?: string;
@@ -28,11 +28,11 @@ function Card({
         }
       }}
       className={
-        "card " +
-        (visible === false ? " flipped " : "") +
-        (isLowest === true ? " lowest " : "") +
-        (isHighest === true ? " highest " : "") +
-        (highlighted ? " highlighted " : "")
+        'card ' +
+        (visible === false ? ' flipped ' : '') +
+        (isLowest === true ? ' lowest ' : '') +
+        (isHighest === true ? ' highest ' : '') +
+        (highlighted ? ' highlighted ' : '')
       }
     >
       <div className="card__face card__face--front">

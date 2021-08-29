@@ -1,6 +1,6 @@
-import React, { useState } from "react";
-import { useLocation, useHistory } from "react-router";
-import { nanoid } from "nanoid";
+import React, { useState } from 'react';
+import { useLocation, useHistory } from 'react-router';
+import { nanoid } from 'nanoid';
 interface LocationState {
   from: {
     pathname: string;
@@ -9,12 +9,12 @@ interface LocationState {
 
 export default function Login() {
   const location = useLocation<LocationState>();
-  const [username, setUsername] = useState<string>("");
+  const [username, setUsername] = useState<string>('');
   const history = useHistory();
-  let { from } = location.state || { from: { pathname: "/" } };
-  let buttonText = "Continue and create a new room";
-  if (from.pathname !== "/") {
-    buttonText = "Continue";
+  let { from } = location.state || { from: { pathname: '/' } };
+  let buttonText = 'Continue and create a new room';
+  if (from.pathname !== '/') {
+    buttonText = 'Continue';
   }
   return (
     <>
@@ -53,8 +53,8 @@ export default function Login() {
               <button
                 className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
                 onClick={() => {
-                  sessionStorage.setItem("username", username);
-                  if (from.pathname === "/") {
+                  sessionStorage.setItem('username', username);
+                  if (from.pathname === '/') {
                     const id = nanoid(8);
                     history.replace({
                       pathname: `/room/${id}`,

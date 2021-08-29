@@ -21,7 +21,7 @@ export class AppGateway
 {
   constructor(private roomService: RoomService) {}
 
-  handleConnection(client: any, ...args: any[]) {
+  handleConnection() {
     this.logger.log('new connection');
   }
 
@@ -67,7 +67,7 @@ export class AppGateway
     client.emit('roomstate', this.roomService.getEstimations(roomName));
   }
 
-  afterInit(server: Server) {
+  afterInit() {
     this.logger.log('Init');
   }
 

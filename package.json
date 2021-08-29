@@ -4,6 +4,16 @@
   "private": true,
   "scripts": {
     "install": "cd frontend && npm install && cd ../backend && npm install",
-    "build": "cd frontend && npm run build && cd ../backend && npm run build"
+    "build": "cd frontend && npm run build && cd ../backend && npm run build",
+    "lint": "npx eslint . && prettier --check ."
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^4.28.2",
+    "@typescript-eslint/parser": "^4.28.2",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-prettier": "^3.4.0",
+    "prettier": "^2.3.2",
+    "typescript": "^4.4.2"
   }
 }

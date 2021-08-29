@@ -1,9 +1,9 @@
-import React from "react";
-import "./App.css";
+import React from 'react';
+import './App.css';
 
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import RoomAuthenticator from "./RoomAuthenticator";
-import Login from "./Login";
+import { BrowserRouter as Router, Switch, Route } from 'react-router-dom';
+import RoomAuthenticator from './RoomAuthenticator';
+import Login from './Login';
 
 function App() {
   return (

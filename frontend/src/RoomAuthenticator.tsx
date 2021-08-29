@@ -1,16 +1,16 @@
-import React from "react";
-import { Redirect, useLocation } from "react-router";
-import Room from "./Room";
+import React from 'react';
+import { Redirect, useLocation } from 'react-router';
+import Room from './Room';
 
 export default function RoomAuthenticator() {
   const location = useLocation();
-  const username = sessionStorage.getItem("username");
+  const username = sessionStorage.getItem('username');
 
   if (username === null) {
     return (
       <Redirect
         to={{
-          pathname: "/",
+          pathname: '/',
           state: { from: location },
         }}
       />
