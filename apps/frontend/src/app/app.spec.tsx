@@ -9,9 +9,9 @@ describe('App', () => {
     expect(baseElement).toBeTruthy();
   });
 
-  it('should have a greeting as the title', () => {
+  it('should render the login view on default', () => {
     const { getByText } = render(<App />);
 
-    expect(getByText(/Welcome frontend/gi)).toBeTruthy();
+    expect(getByText(/Pick your username!/gi)).toBeTruthy();
   });
 });
