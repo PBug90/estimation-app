@@ -1,13 +1,10 @@
-FROM node:14
+FROM node:16-alpine
 
 WORKDIR /usr/src/app
 
-COPY ./backend/dist/ ./backend/dist
-COPY ./backend/package*.json ./backend/
+COPY ./dist/apps/backend/ ./backend/
 RUN cd ./backend/ && npm install --production
 
-COPY ./frontend/build/ ./frontend/build
+COPY ./dist/apps/frontend/ ./frontend/build
 
-CMD [ "node", "./backend/dist/main.js" ]
-
-
+CMD [ "node", "./backend/main.js" ]
