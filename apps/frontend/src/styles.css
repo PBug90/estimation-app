@@ -1,22 +1,29 @@
-/* You can add global styles to this file, and also import other style files */
 @tailwind components;
 @tailwind base;
 @tailwind utilities;
 
+body {
+  background-color: #24292e;
+}
+
 .card {
-  width: 80px;
-  height: 120px;
-  transition: transform 1s;
+  width: 120px;
+  height: 160px;
+  transition: transform 0.5s;
   transform-style: preserve-3d;
   cursor: pointer;
   position: relative;
-  border: 4px solid white;
+  border: 8px solid white;
   border-radius: 4px;
   color: black;
 }
 
 .card.highlighted {
-  border-color: gold;
+  border-color: #34d399;
+}
+
+.card.highlighted svg {
+  color: #34d399;
 }
 
 .card .value {
@@ -55,7 +62,6 @@
 }
 
 .card__face--front {
-  background: white;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
@@ -63,13 +69,5 @@
 
 .card__face--back {
   z-index: 9999;
-  background-color: #e5e5f7;
-  background: repeating-linear-gradient(
-    -45deg,
-    #444cf7,
-    #444cf7 5px,
-    #e5e5f7 5px,
-    #e5e5f7 25px
-  );
   transform: rotateY(180deg);
 }

@@ -6,7 +6,7 @@ import Login from './Login';
 
 function App() {
   return (
-    <div className="App">
+    <div className="h-screen flex flex-col">
       <Router>
         <Routes>
           <Route path="/room/:roomId" element={<RoomAuthenticator />}></Route>

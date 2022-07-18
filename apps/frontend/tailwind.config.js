@@ -7,7 +7,11 @@ module.exports = {
     extend: {},
   },
   variants: {
-    extend: {},
+    backgroundColor: ({ after }) => after(['disabled']),
+    extend: {
+      opacity: ['disabled'],
+      cursor: ['disabled'],
+    },
   },
-  plugins: [],
+  plugins: [require('tw-elements/dist/plugin')],
 };
