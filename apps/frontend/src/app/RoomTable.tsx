@@ -1,5 +1,5 @@
 import React from 'react';
-import Card from './Card';
+import { Card } from './Card';
 
 interface RoomTableProps {
   roomState: Record<string, number>;
@@ -13,7 +13,7 @@ export default function RoomTable(props: RoomTableProps) {
   let highestValue = -1;
   if (revealed === true) {
     const relevantEstimations = Object.values(roomState).filter(
-      (value) => value > 0,
+      (value) => value > 0
     );
     const sum = relevantEstimations.reduce((prev, current) => {
       if (current > highestValue) {
@@ -40,9 +40,10 @@ export default function RoomTable(props: RoomTableProps) {
         {Object.entries({ ...roomState }).map(([name, value], index) => (
           <div className="flex flex-col m-10">
             <Card
-              estimation={value}
-              highlighted={value > -1 && revealed === false}
-              visible={revealed}
+              value={value}
+              isHighlighted={value > -1 && revealed === false}
+              revealed={revealed}
+              isInput={false}
             />
             <div className="text-center text-gray-300">{name}</div>
           </div>
