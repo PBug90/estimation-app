@@ -1,48 +1,42 @@
 import React from 'react';
 
-type CardProps = {
-  name?: string;
-  estimation: number;
-  highlighted: boolean;
-  visible: boolean;
-  isLowest?: boolean;
-  isHighest?: boolean;
-  onSelection?: (value: number) => undefined;
-};
-
-function Card({
-  name,
-  estimation,
-  onSelection,
-  highlighted,
-  isLowest,
-  isHighest,
-  visible,
-}: CardProps) {
-  return (
-    <div
-      onClick={(event) => {
-        event.preventDefault();
-        if (onSelection) {
-          onSelection(estimation);
-        }
-      }}
-      className={
-        'card ' +
-        (visible === false ? ' flipped ' : '') +
-        (isLowest === true ? ' lowest ' : '') +
-        (isHighest === true ? ' highest ' : '') +
-        (highlighted ? ' highlighted ' : '')
-      }
-    >
-      <div className="card__face card__face--front">
-        <div className="smalltop">{estimation}</div>
-        <div className="value">{estimation}</div>
-        <div className="smallbot">{estimation}</div>
-      </div>
-      <div className="card__face card__face--back"></div>
-    </div>
-  );
+interface CardProps {
+  value: number;
+  revealed: boolean;
+  isInput: boolean;
+  isHighlighted?: boolean;
 }
 
-export default Card;
+export const Card = ({
+  value,
+  revealed,
+  isInput = false,
+  isHighlighted,
+}: CardProps) => {
+  let shownValue: number | string = value;
+  if (value === -1) {
+    shownValue = '🛇';
+  }
+  return (
+    <div
+      className={
+        'card font-mono ' +
+        (revealed === false ? 'flipped ' : ' ') +
+        (isInput === true ? 'input ' : ' ') +
+        (isHighlighted === true ? 'highlighted ' : ' ')
+      }
+      style={{ aspectRatio: '3/4', backgroundColor: 'orange' }}
+    >
+      <div className="card__face card__face--front bg-gray-300 font-black">
+        <div className="smalltop">{shownValue}</div>
+        <div className="value">{shownValue}</div>
+        <div className="smallbot">{shownValue}</div>
+      </div>
+      <div className="card__face card__face--back flex justify-center items-center bg-gray-400">
+        <div className="h-10 w-10 text-3xl text-center">
+          <span>&#127922;</span>
+        </div>
+      </div>
+    </div>
+  );
+};

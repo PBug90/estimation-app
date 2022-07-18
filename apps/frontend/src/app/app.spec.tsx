@@ -12,6 +12,6 @@ describe('App', () => {
   it('should render the login view on default', () => {
     const { getByText } = render(<App />);
 
-    expect(getByText(/Pick your username!/gi)).toBeTruthy();
+    expect(getByText(/Your username/gi)).toBeTruthy();
   });
 });

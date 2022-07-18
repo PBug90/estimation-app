@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import * as ReactDOM from 'react-dom';
-
+import 'animate.css';
 import App from './app/App';
 
 ReactDOM.render(
