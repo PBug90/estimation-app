@@ -1,7 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AppGateway } from './app.gateway';
 import { RoomService } from './room.service';
-
 describe('AppGateway', () => {
   let gateway: AppGateway;
 
