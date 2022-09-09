@@ -1,3 +1,3 @@
 # estimation-app
 
-Latest master commit is available for trying out at https://agile-estimation-app.herokuapp.com/
+Try latest master commit at https://estimation-app-production.up.railway.app/
