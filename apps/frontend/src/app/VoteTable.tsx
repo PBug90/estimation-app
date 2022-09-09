@@ -38,12 +38,12 @@ export default ({
 
   return (
     <div className="w-5/6">
-      <div className="flex  justify-center mt-5">
-        <div className="flex flex-col items-center justify-center font-bold text-gray-100 flex-none justify-center font-mono text-4xl">
+      <div className="flex justify-center md:mt-5">
+        <div className="flex flex-col items-center justify-center font-bold text-gray-100 flex-none justify-center font-mono md:text-4xl text-xl">
           {description}
-          <div className="mt-10 mb-10">
+          <div className="md:mt-10 md:mb-10">
             {revealed ? (
-              <h1 className="text-pink-400 text-4xl">
+              <h1 className="text-pink-400 md:text-4xl text-xl">
                 {Number.isNaN(average) === false ? (
                   <>&#8709;{average.toFixed(1)}</>
                 ) : (
