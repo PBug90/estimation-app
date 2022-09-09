@@ -296,7 +296,7 @@ function Room({ username }: RoomProps) {
 
           {role === UserRole.DEVELOPER && (
             <div
-              className="flex flex-row justify-evenly p-10 absolute inset-x-0 bottom-0"
+              className="flex flex-row justify-evenly md:p-10 p-2 absolute inset-x-0 bottom-0 overflow-x-auto"
               style={{ borderTop: '2px solid #fafbfc' }}
             >
               <UserVoteInput

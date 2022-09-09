@@ -7,14 +7,10 @@ body {
 }
 
 .card {
-  width: 120px;
-  height: 160px;
   transition: transform 0.5s;
   transform-style: preserve-3d;
   cursor: pointer;
   position: relative;
-  border: 8px solid white;
-  border-radius: 4px;
   color: black;
 }
 
@@ -29,24 +25,16 @@ body {
 .card .value {
   justify-content: center;
   width: 100%;
-  font-size: 2rem;
   text-align: center;
 }
 
 .card .smalltop,
 .card .smallbot {
-  display: flex;
-  justify-content: left;
-  font-size: 0.75rem;
-  padding-left: 10px;
-  padding-top: 10px;
   cursor: pointer;
 }
 
 .card .smallbot {
   justify-content: flex-end;
-  padding-right: 10px;
-  padding-bottom: 10px;
 }
 
 .card.flipped {

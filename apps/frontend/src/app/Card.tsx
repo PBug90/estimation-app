@@ -20,12 +20,12 @@ export const Card = ({
   return (
     <div
       className={
-        'card font-mono ' +
+        'card font-mono md:w-36 sm:w-20 w-16 border-white border-2 sm:border-4 md:border-8 ' +
         (revealed === false ? 'flipped ' : ' ') +
         (isInput === true ? 'input ' : ' ') +
         (isHighlighted === true ? 'highlighted ' : ' ')
       }
-      style={{ aspectRatio: '3/4', backgroundColor: 'orange' }}
+      style={{ aspectRatio: '3/4' }}
     >
       <div className="card__face card__face--front bg-gray-300 font-black">
         <div className="smalltop">{shownValue}</div>
